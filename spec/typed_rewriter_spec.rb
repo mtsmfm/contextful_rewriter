@@ -28,21 +28,70 @@ RSpec.describe TypedRewriter do
       system("ruby -r bundler/setup -r pry-byebug -I #{File.join(__dir__, '..', 'lib')} #{path}", exception: true)
     end
 
-    describe "replacing {:foo.foo => 1} with {:foo => {$:foo => 1}}" do
-      let(:main_code) {
+    before do
+      File.write('setup.rb', setup_code)
+      File.write('main.rb', main_code)
+
+      File.write('test.rb', <<~RUBY)
+        require 'typed_rewriter'
+        TypedRewriter.record_runtime_type_info do
+          require_relative 'setup'
+          require_relative 'main'
+        end
+
+        TypedRewriter.write_runtime_type_info_db('db.yml')
+      RUBY
+
+      run_ruby("test.rb")
+
+      TypedRewriter.load_runtime_type_info_db('db.yml')
+    end
+
+    describe "replacing Bar#foo with Bar#bar" do
+      let(:setup_code) {
         <<~RUBY
-          {Foo.new.foo => 1}
-          {:foo.foo => 1}
-          {
-            :foo.foo => 1
-          }
-          {:foo.foo(1) => 1}
-          {:foo.as_json => 1}
+          class Foo
+            def foo
+            end
+          end
+
+          class Bar
+            def foo
+            end
+          end
         RUBY
       }
 
-      before do
-        File.write('setup.rb', <<~RUBY)
+      let(:main_code) {
+        <<~RUBY
+          Foo.new.foo
+          Bar.new.foo
+        RUBY
+      }
+
+      subject do
+        -> do
+          TypedRewriter.rewrite do |node, data, rewriter|
+            receiver, method_name, *args = node.children
+
+            if data[:caller_class_name] == "Bar" && method_name == :foo
+              rewriter.replace(node.loc.expression, "#{receiver.loc.expression.source}.bar")
+            end
+          end
+        end
+      end
+
+      it {
+        is_expected.to change { File.read('main.rb') }.to(<<~RUBY)
+          Foo.new.foo
+          Bar.new.bar
+        RUBY
+      }
+    end
+
+    describe "replacing {:foo.foo => 1} with {:foo => {$:foo => 1}}" do
+      let(:setup_code) {
+        <<~RUBY
           require 'json/add/symbol'
           class Symbol
             def foo(*)
@@ -54,23 +103,19 @@ RSpec.describe TypedRewriter do
             end
           end
         RUBY
+      }
 
-        File.write('main.rb', main_code)
-
-        File.write('foo_test.rb', <<~RUBY)
-          require 'typed_rewriter'
-          TypedRewriter.record_runtime_type_info do
-            require_relative 'setup'
-            require_relative 'main'
-          end
-
-          TypedRewriter.write_runtime_type_info_db('db.yml')
+      let(:main_code) {
+        <<~RUBY
+          {Foo.new.foo => 1}
+          {:foo.foo => 1}
+          {
+            :foo.foo => 1
+          }
+          {:foo.foo(1) => 1}
+          {:foo.as_json => 1}
         RUBY
-
-        run_ruby("foo_test.rb")
-
-        TypedRewriter.load_runtime_type_info_db('db.yml')
-      end
+      }
 
       subject do
         -> do
