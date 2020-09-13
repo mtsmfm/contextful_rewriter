@@ -1,8 +1,6 @@
 # TypedRewriter
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/typed_rewriter`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Rewrite your Ruby codes with Ruby runtime information.
 
 ## Installation
 
@@ -22,7 +20,59 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Let's say we have the following code:
+
+```ruby
+class Foo
+  def foo
+  end
+end
+
+class Bar
+  def foo
+    # Deprecated, use Bar#bar instead
+  end
+
+  def bar
+  end
+end
+
+Foo.new.foo # keep using Foo#foo
+Bar.new.foo # want to replace with .bar
+```
+
+In this case, you can't just replace `.foo` with `.bar`
+because it also replaces `Foo#foo`.
+
+This gem can help such situation.
+
+### 1. Record runtime type info
+
+At the first, you need to create runtime info db:
+
+```ruby
+TypedRewriter.record_runtime_type_info do
+  # Put your codes here
+end
+
+TypedRewriter.write_runtime_type_info_db('db.yml')
+```
+
+### 2. Rewrite
+
+Then, you can use `.rewrite` method to replace your codes:
+
+```ruby
+TypedRewriter.load_runtime_type_info_db('db.yml')
+
+TypedRewriter.rewrite do |node, data, rewriter|
+  receiver, method_name, *args = node.children
+
+  if data[:caller_class_name] == "Foo" && method_name == :foo
+    rewriter.replace(node.loc.expression, "#{receiver.loc.expression.source}.bar")
+  end
+end
+```
 
 ## Development
 
