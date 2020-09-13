@@ -14,7 +14,7 @@ module ContextfulRewriter
       true
     }
 
-    def record_runtime_type_info(path_rule = DEFAULT_PATH_RULE, &block)
+    def record_runtime_info(path_rule = DEFAULT_PATH_RULE, &block)
       trace = TracePoint.new(:call) do |tp|
         c = caller_locations(2, 1).first
         method_source_absolute_path, method_source_lineno = tp.binding.source_location
@@ -37,11 +37,11 @@ module ContextfulRewriter
       trace.enable(&block)
     end
 
-    def write_runtime_type_info_db(db_file_path)
+    def write_runtime_info_db(db_file_path)
       File.write(db_file_path, db.to_yaml)
     end
 
-    def load_runtime_type_info_db(db_file_path)
+    def load_runtime_info_db(db_file_path)
       mutex.synchronize do
         @db = YAML.load_file(db_file_path)
       end

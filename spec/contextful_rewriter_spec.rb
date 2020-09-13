@@ -34,17 +34,17 @@ RSpec.describe ContextfulRewriter do
 
       File.write('test.rb', <<~RUBY)
         require 'contextful_rewriter'
-        ContextfulRewriter.record_runtime_type_info do
+        ContextfulRewriter.record_runtime_info do
           require_relative 'setup'
           require_relative 'main'
         end
 
-        ContextfulRewriter.write_runtime_type_info_db('db.yml')
+        ContextfulRewriter.write_runtime_info_db('db.yml')
       RUBY
 
       run_ruby("test.rb")
 
-      ContextfulRewriter.load_runtime_type_info_db('db.yml')
+      ContextfulRewriter.load_runtime_info_db('db.yml')
     end
 
     describe "replacing Bar#foo with Bar#bar" do

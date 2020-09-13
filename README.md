@@ -46,16 +46,16 @@ because it also replaces `Foo#foo`.
 
 This gem can help such situation.
 
-### 1. Record runtime type info
+### 1. Record runtime info
 
 At the first, you need to create runtime info db:
 
 ```ruby
-ContextfulRewriter.record_runtime_type_info do
+ContextfulRewriter.record_runtime_do
   # Put your codes here
 end
 
-ContextfulRewriter.write_runtime_type_info_db('db.yml')
+ContextfulRewriter.write_runtime_info_db('db.yml')
 ```
 
 ### 2. Rewrite
@@ -63,7 +63,7 @@ ContextfulRewriter.write_runtime_type_info_db('db.yml')
 Then, you can use `.rewrite` method to replace your codes:
 
 ```ruby
-ContextfulRewriter.load_runtime_type_info_db('db.yml')
+ContextfulRewriter.load_runtime_info_db('db.yml')
 
 ContextfulRewriter.rewrite do |node, data, rewriter|
   receiver, method_name, *args = node.children
