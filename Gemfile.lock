@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    typed_gsub (0.1.0)
+    typed_rewriter (0.1.0)
       parser (>= 2.7.1.4)
 
 GEM
@@ -42,7 +42,7 @@ DEPENDENCIES
   pry-byebug (>= 3.9.0)
   rake (~> 12.0)
   rspec (~> 3.0)
-  typed_gsub!
+  typed_rewriter!
 
 BUNDLED WITH
    2.2.0.dev

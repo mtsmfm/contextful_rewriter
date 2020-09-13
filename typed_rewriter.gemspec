@@ -1,20 +1,20 @@
-require_relative 'lib/typed_gsub/version'
+require_relative 'lib/typed_rewriter/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "typed_gsub"
-  spec.version       = TypedGsub::VERSION
+  spec.name          = "typed_rewriter"
+  spec.version       = TypedRewriter::VERSION
   spec.authors       = ["Fumiaki MATSUSHIMA"]
   spec.email         = ["mtsmfm@gmail.com"]
 
   spec.summary       = %q{}
   spec.description   = %q{}
-  spec.homepage      = "https://github.com/mtsmfm/typed_gsub"
+  spec.homepage      = "https://github.com/mtsmfm/typed_rewriter"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/mtsmfm/typed_gsub"
-  spec.metadata["changelog_uri"] = "https://github.com/mtsmfm/blob/main/typed_gsub"
+  spec.metadata["source_code_uri"] = "https://github.com/mtsmfm/typed_rewriter"
+  spec.metadata["changelog_uri"] = "https://github.com/mtsmfm/blob/main/typed_rewriter"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

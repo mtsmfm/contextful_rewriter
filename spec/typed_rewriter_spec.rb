@@ -14,7 +14,7 @@ RSpec::Matchers::BuiltIn::ChangeToValue.prepend(Module.new do
   end
 end)
 
-RSpec.describe TypedGsub do
+RSpec.describe TypedRewriter do
   around do |ex|
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
@@ -23,7 +23,7 @@ RSpec.describe TypedGsub do
     end
   end
 
-  describe ".gsub" do
+  describe ".rewrite" do
     def run_ruby(path)
       system("ruby -r bundler/setup -r pry-byebug -I #{File.join(__dir__, '..', 'lib')} #{path}", exception: true)
     end
@@ -58,23 +58,23 @@ RSpec.describe TypedGsub do
         File.write('main.rb', main_code)
 
         File.write('foo_test.rb', <<~RUBY)
-          require 'typed_gsub'
-          TypedGsub.record_runtime_type_info do
+          require 'typed_rewriter'
+          TypedRewriter.record_runtime_type_info do
             require_relative 'setup'
             require_relative 'main'
           end
 
-          TypedGsub.write_runtime_type_info_db('db.yml')
+          TypedRewriter.write_runtime_type_info_db('db.yml')
         RUBY
 
         run_ruby("foo_test.rb")
 
-        TypedGsub.load_runtime_type_info_db('db.yml')
+        TypedRewriter.load_runtime_type_info_db('db.yml')
       end
 
       subject do
         -> do
-          TypedGsub.gsub do |node, data, rewriter|
+          TypedRewriter.rewrite do |node, data, rewriter|
             receiver, method_name, *args = node.children
 
             if data[:caller_class_name] == "Symbol" && method_name == :foo && args.size == 0

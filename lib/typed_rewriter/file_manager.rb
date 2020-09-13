@@ -1,4 +1,4 @@
-module TypedGsub
+module TypedRewriter
   class FileManager
     def read(path)
       map[path]

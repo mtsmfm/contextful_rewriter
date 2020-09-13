@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "typed_gsub"
+require "typed_rewriter"
 require "pry-byebug"
 require "tmpdir"
 

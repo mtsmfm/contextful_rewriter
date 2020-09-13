@@ -1,6 +1,6 @@
 require "parser/current"
 
-module TypedGsub
+module TypedRewriter
   class Rewriter < Parser::TreeRewriter
     def self.rewrite(path:, code:, target_line:, &block)
       ast = Parser::CurrentRuby.parse(code)

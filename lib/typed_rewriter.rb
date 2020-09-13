@@ -1,9 +1,9 @@
-require "typed_gsub/version"
-require "typed_gsub/gsub_runner"
+require "typed_rewriter/version"
+require "typed_rewriter/runner"
 require "yaml"
 require "set"
 
-module TypedGsub
+module TypedRewriter
   class Error < StandardError; end
 
   class << self
@@ -47,8 +47,8 @@ module TypedGsub
       end
     end
 
-    def gsub(&block)
-      GsubRunner.new(db).run(&block)
+    def rewrite(&block)
+      Runner.new(db).run(&block)
     end
 
     private

@@ -1,8 +1,8 @@
-require "typed_gsub/file_manager"
-require "typed_gsub/rewriter"
+require "typed_rewriter/file_manager"
+require "typed_rewriter/rewriter"
 
-module TypedGsub
-  class GsubRunner
+module TypedRewriter
+  class Runner
     def initialize(db)
       @db = db
       @file_manager = FileManager.new
