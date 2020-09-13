@@ -51,11 +51,11 @@ This gem can help in such a situation.
 At the first, you need to create runtime info db:
 
 ```ruby
-ContextfulRewriter.record_runtime_do
+db = ContextfulRewriter.record_runtime_do do
   # Put your codes here
 end
 
-ContextfulRewriter.write_runtime_info_db('db.yml')
+db.export('db.yml')
 ```
 
 ### 2. Rewrite
@@ -63,9 +63,7 @@ ContextfulRewriter.write_runtime_info_db('db.yml')
 Then, you can use `.rewrite` method to replace your codes:
 
 ```ruby
-ContextfulRewriter.load_runtime_info_db('db.yml')
-
-ContextfulRewriter.rewrite do |node, data, rewriter|
+ContextfulRewriter.rewrite(runtime_info_db_path: 'db.yml') do |node, data, rewriter|
   receiver, method_name, *args = node.children
 
   if data[:caller_class_name] == "Foo" && method_name == :foo

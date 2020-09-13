@@ -1,7 +1,6 @@
 require "contextful_rewriter/version"
 require "contextful_rewriter/runner"
-require "yaml"
-require "set"
+require "contextful_rewriter/runtime_info_db"
 
 module ContextfulRewriter
   class Error < StandardError; end
@@ -15,12 +14,12 @@ module ContextfulRewriter
     }
 
     def record_runtime_info(path_rule = DEFAULT_PATH_RULE, &block)
-      trace = TracePoint.new(:call) do |tp|
-        c = caller_locations(2, 1).first
-        method_source_absolute_path, method_source_lineno = tp.binding.source_location
+      RuntimeInfoDb.new.tap do |db|
+        trace = TracePoint.new(:call) do |tp|
+          c = caller_locations(2, 1).first
+          method_source_absolute_path, method_source_lineno = tp.binding.source_location
 
-        if DEFAULT_PATH_RULE.call(c.absolute_path)
-          mutex.synchronize do
+          if path_rule.call(c.absolute_path)
             db << {
               method_defined_class_name: tp.defined_class.to_s,
               method_name: tp.callee_id,
@@ -32,33 +31,13 @@ module ContextfulRewriter
             }
           end
         end
-      end
 
-      trace.enable(&block)
-    end
-
-    def write_runtime_info_db(db_file_path)
-      File.write(db_file_path, db.to_yaml)
-    end
-
-    def load_runtime_info_db(db_file_path)
-      mutex.synchronize do
-        @db = YAML.load_file(db_file_path)
+        trace.enable(&block)
       end
     end
 
-    def rewrite(&block)
-      Runner.new(db).run(&block)
-    end
-
-    private
-
-    def mutex
-      @mutex ||= Mutex.new
-    end
-
-    def db
-      @db ||= Set.new
+    def rewrite(runtime_info_db_path:, &block)
+      Runner.new(RuntimeInfoDb.new(runtime_info_db_path)).run(&block)
     end
   end
 end

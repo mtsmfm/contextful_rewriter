@@ -34,17 +34,15 @@ RSpec.describe ContextfulRewriter do
 
       File.write('test.rb', <<~RUBY)
         require 'contextful_rewriter'
-        ContextfulRewriter.record_runtime_info do
+        db = ContextfulRewriter.record_runtime_info do
           require_relative 'setup'
           require_relative 'main'
         end
 
-        ContextfulRewriter.write_runtime_info_db('db.yml')
+        db.export('db.yml')
       RUBY
 
       run_ruby("test.rb")
-
-      ContextfulRewriter.load_runtime_info_db('db.yml')
     end
 
     describe "replacing Bar#foo with Bar#bar" do
@@ -71,7 +69,7 @@ RSpec.describe ContextfulRewriter do
 
       subject do
         -> do
-          ContextfulRewriter.rewrite do |node, data, rewriter|
+          ContextfulRewriter.rewrite(runtime_info_db_path: 'db.yml') do |node, data, rewriter|
             receiver, method_name, *args = node.children
 
             if data[:caller_class_name] == "Bar" && method_name == :foo
@@ -119,7 +117,7 @@ RSpec.describe ContextfulRewriter do
 
       subject do
         -> do
-          ContextfulRewriter.rewrite do |node, data, rewriter|
+          ContextfulRewriter.rewrite(runtime_info_db_path: 'db.yml') do |node, data, rewriter|
             receiver, method_name, *args = node.children
 
             if data[:caller_class_name] == "Symbol" && method_name == :foo && args.size == 0
