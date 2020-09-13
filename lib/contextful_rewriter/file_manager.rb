@@ -1,4 +1,4 @@
-module TypedRewriter
+module ContextfulRewriter
   class FileManager
     def read(path)
       map[path]

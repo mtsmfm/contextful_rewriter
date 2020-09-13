@@ -1,7 +1,7 @@
-require "typed_rewriter/file_manager"
-require "typed_rewriter/rewriter"
+require "contextful_rewriter/file_manager"
+require "contextful_rewriter/rewriter"
 
-module TypedRewriter
+module ContextfulRewriter
   class Runner
     def initialize(db)
       @db = db

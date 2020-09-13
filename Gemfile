@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in typed_rewriter.gemspec
+# Specify your gem's dependencies in contextful_rewriter.gemspec
 gemspec
 
 gem "rake", "~> 12.0"

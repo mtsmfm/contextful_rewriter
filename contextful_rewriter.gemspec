@@ -1,20 +1,20 @@
-require_relative 'lib/typed_rewriter/version'
+require_relative 'lib/contextful_rewriter/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "typed_rewriter"
-  spec.version       = TypedRewriter::VERSION
+  spec.name          = "contextful_rewriter"
+  spec.version       = ContextfulRewriter::VERSION
   spec.authors       = ["Fumiaki MATSUSHIMA"]
   spec.email         = ["mtsmfm@gmail.com"]
 
   spec.summary       = %q{}
   spec.description   = %q{}
-  spec.homepage      = "https://github.com/mtsmfm/typed_rewriter"
+  spec.homepage      = "https://github.com/mtsmfm/contextful_rewriter"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/mtsmfm/typed_rewriter"
-  spec.metadata["changelog_uri"] = "https://github.com/mtsmfm/blob/main/typed_rewriter"
+  spec.metadata["source_code_uri"] = "https://github.com/mtsmfm/contextful_rewriter"
+  spec.metadata["changelog_uri"] = "https://github.com/mtsmfm/blob/main/contextful_rewriter"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

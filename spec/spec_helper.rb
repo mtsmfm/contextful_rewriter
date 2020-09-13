@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "typed_rewriter"
+require "contextful_rewriter"
 require "pry-byebug"
 require "tmpdir"
 

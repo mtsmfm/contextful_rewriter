@@ -14,7 +14,7 @@ RSpec::Matchers::BuiltIn::ChangeToValue.prepend(Module.new do
   end
 end)
 
-RSpec.describe TypedRewriter do
+RSpec.describe ContextfulRewriter do
   around do |ex|
     Dir.mktmpdir do |dir|
       Dir.chdir(dir) do
@@ -33,18 +33,18 @@ RSpec.describe TypedRewriter do
       File.write('main.rb', main_code)
 
       File.write('test.rb', <<~RUBY)
-        require 'typed_rewriter'
-        TypedRewriter.record_runtime_type_info do
+        require 'contextful_rewriter'
+        ContextfulRewriter.record_runtime_type_info do
           require_relative 'setup'
           require_relative 'main'
         end
 
-        TypedRewriter.write_runtime_type_info_db('db.yml')
+        ContextfulRewriter.write_runtime_type_info_db('db.yml')
       RUBY
 
       run_ruby("test.rb")
 
-      TypedRewriter.load_runtime_type_info_db('db.yml')
+      ContextfulRewriter.load_runtime_type_info_db('db.yml')
     end
 
     describe "replacing Bar#foo with Bar#bar" do
@@ -71,7 +71,7 @@ RSpec.describe TypedRewriter do
 
       subject do
         -> do
-          TypedRewriter.rewrite do |node, data, rewriter|
+          ContextfulRewriter.rewrite do |node, data, rewriter|
             receiver, method_name, *args = node.children
 
             if data[:caller_class_name] == "Bar" && method_name == :foo
@@ -119,7 +119,7 @@ RSpec.describe TypedRewriter do
 
       subject do
         -> do
-          TypedRewriter.rewrite do |node, data, rewriter|
+          ContextfulRewriter.rewrite do |node, data, rewriter|
             receiver, method_name, *args = node.children
 
             if data[:caller_class_name] == "Symbol" && method_name == :foo && args.size == 0

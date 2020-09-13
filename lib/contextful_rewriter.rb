@@ -1,9 +1,9 @@
-require "typed_rewriter/version"
-require "typed_rewriter/runner"
+require "contextful_rewriter/version"
+require "contextful_rewriter/runner"
 require "yaml"
 require "set"
 
-module TypedRewriter
+module ContextfulRewriter
   class Error < StandardError; end
 
   class << self
