@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Fumiaki MATSUSHIMA"]
   spec.email         = ["mtsmfm@gmail.com"]
 
-  spec.summary       = %q{}
-  spec.description   = %q{}
+  spec.summary       = %q{Rewrite your Ruby codes with Ruby runtime information.}
+  spec.description   = %q{Rewrite your Ruby codes with Ruby runtime information.}
   spec.homepage      = "https://github.com/mtsmfm/contextful_rewriter"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
