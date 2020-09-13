@@ -1,5 +1,7 @@
 require "bundler/setup"
 require "typed_gsub"
+require "pry-byebug"
+require "tmpdir"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
