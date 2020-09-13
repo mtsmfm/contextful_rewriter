@@ -25,7 +25,7 @@ RSpec.describe ContextfulRewriter do
 
   describe ".rewrite" do
     def run_ruby(path)
-      system("ruby -r bundler/setup -r pry-byebug -I #{File.join(__dir__, '..', 'lib')} #{path}", exception: true)
+      system("ruby -W0 -r bundler/setup -r pry-byebug -I #{File.join(__dir__, '..', 'lib')} #{path}", exception: true)
     end
 
     before do
