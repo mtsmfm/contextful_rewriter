@@ -44,7 +44,7 @@ Bar.new.foo # want to replace with .bar
 In this case, you can't just replace `.foo` with `.bar`
 because it also replaces `Foo#foo`.
 
-This gem can help such situation.
+This gem can help in such a situation.
 
 ### 1. Record runtime info
 
