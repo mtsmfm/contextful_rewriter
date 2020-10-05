@@ -66,7 +66,7 @@ Then, you can use `.rewrite` method to replace your codes:
 ContextfulRewriter.rewrite(runtime_info_db_path: 'db.yml') do |node, data, rewriter|
   receiver, method_name, *args = node.children
 
-  if data[:caller_class_name] == "Foo" && method_name == :foo
+  if data[:caller_class_name] == "Bar" && method_name == :foo
     rewriter.replace(node.loc.expression, "#{receiver.loc.expression.source}.bar")
   end
 end
