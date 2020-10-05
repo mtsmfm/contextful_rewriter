@@ -39,10 +39,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  contextful_rewriter!
   pry-byebug (>= 3.9.0)
   rake (~> 12.0)
   rspec (~> 3.0)
-  contextful_rewriter!
 
 BUNDLED WITH
    2.2.0.dev

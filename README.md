@@ -51,11 +51,19 @@ This gem can help in such a situation.
 At the first, you need to create runtime info db:
 
 ```ruby
-db = ContextfulRewriter.record_runtime_info do
+recorder = ContextfulRewriter.create_recorder
+
+recorder.record do
   # Put your codes here
 end
 
-db.export('db.yml')
+# OR
+
+recorder.start
+# Put your codes here
+recorder.stop
+
+recorder.export('db.yml')
 ```
 
 ### 2. Rewrite

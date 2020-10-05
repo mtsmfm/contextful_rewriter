@@ -34,12 +34,14 @@ RSpec.describe ContextfulRewriter do
 
       File.write('test.rb', <<~RUBY)
         require 'contextful_rewriter'
-        db = ContextfulRewriter.record_runtime_info do
+        recorder = ContextfulRewriter.create_recorder
+
+        recorder.record do
           require_relative 'setup'
           require_relative 'main'
         end
 
-        db.export('db.yml')
+        recorder.export('db.yml')
       RUBY
 
       run_ruby("test.rb")
