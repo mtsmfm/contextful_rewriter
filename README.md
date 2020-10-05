@@ -51,7 +51,7 @@ This gem can help in such a situation.
 At the first, you need to create runtime info db:
 
 ```ruby
-db = ContextfulRewriter.record_runtime_do do
+db = ContextfulRewriter.record_runtime_info do
   # Put your codes here
 end
 
