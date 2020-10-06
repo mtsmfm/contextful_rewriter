@@ -20,9 +20,10 @@ module ContextfulRewriter
       @path_rule = path_rule || DEFAULT_PATH_RULE
       @trace = TracePoint.new(:call) do |tp|
         c = caller_locations(2, 1).first
-        method_source_absolute_path, method_source_lineno = tp.binding.source_location
 
         if @path_rule.call(c.absolute_path)
+          method_source_absolute_path, method_source_lineno = tp.binding.source_location
+
           @db << {
             method_defined_class_name: tp.defined_class.to_s,
             method_name: tp.callee_id,
