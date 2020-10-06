@@ -3,10 +3,14 @@ require "contextful_rewriter/runner"
 
 module ContextfulRewriter
   class Recorder
+    # How do I check initial $LOAD_PATH stuff?
+    RUBY_LIB_PATH = "/usr/local/lib/ruby/"
+    BUNDLE_PATH = defined?(Bundler) ? Bundler.bundle_path.to_s + "/" : nil
+
     DEFAULT_PATH_RULE = -> (path) {
       return false unless path
-      return false if path.start_with?("/usr/local/lib/ruby/") # How do I check initial $LOAD_PATH stuff?
-      return false if defined?(Bundler) && path.start_with?(Bundler.bundle_path.to_s + "/")
+      return false if path.start_with?(RUBY_LIB_PATH)
+      return false if BUNDLE_PATH && path.start_with?(BUNDLE_PATH)
 
       true
     }
